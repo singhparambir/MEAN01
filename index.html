@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      body {
+        height:100vh;
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: 'Open Sans', sans-serif;
+        
+      }
+      .container {
+  background: linear-gradient(to bottom,  #0f4c75, #e6f2ff);
+  /* rest of your styles */
+}
+.container{
+    max-width: auto;
+    background-color:white ;
+    margin:auto ;
+    width:auto;
+    height: auto;
+    border:2px solid black;
+    padding:33px;
+    overflow-y: auto;
+    margin-bottom: 23px;
+}
+     
+
+      .card-header {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 1rem;
+        color: #fcfbfb;
+      }
+
+      .message-container {
+         
+        width: 100%;
+        float: left;
+        overflow-y: auto;
+        height: 60vh;
+        background-color: linear-gradient(to bottom,#0f4c75, #e6f2ff);
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .message.left {
+  float: left;
+  clear: both;
+  margin-right: 50%;
+}
+
+.message.right {
+  float: right;
+  clear: both;
+  margin-left: 50%;
+}
+
+
+
+      #form {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 10000px;
+        height: 10vh;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      #input {
+        border: none;
+        padding: 0.5rem;
+        flex-grow: 1;
+        border-radius: 3px;
+        margin-right: 1rem;
+        font-size: 1rem;
+      }
+
+      #input:focus {
+        outline: none;
+      }
+
+      #form > button {
+        align-items: center;
+        background: #0f4c75;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-left: 1rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      .message{
+    background-color:linear-gradient(to bottom,#0f4c75, #e6f2ff);
+    width:24% ;
+    padding: 10px;
+    margin: 17px 12px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+
+      .message p {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: bold;
+        margin-right: 1rem;
+      }
+
+      .message span {
+        font-size: 0.8rem;
+        color: #aaa;
+      }
+
+      .message-content {
+        flex-grow: 1;
+      }
+      .logo{
+  display: block;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  align-self: flex-start;
+}
+
+    </style>
+  </head>
+  <body>
+   
+    <div class="container">
+      <div class="card">
+        <img class="logo" src="blue.png" >
+      
+        <div class="card-header">Chirping</div>
+        <div class="message-container">
+          <div id="messages"></div>
+        </div>
+        <form id="form" action="">
+          <input id="input" autocomplete="off" placeholder="Type your message here" />
+          <button>Send</button>
+        </form>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+
+    
+    <script>
+      var socket = io();
+
+      var messages = document.getElementById('messages');
+      var form = document.getElementById('form');
+      var input = document.getElementById('input');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit('chat message', input.value);
+          input.value = '';
+        }
+      });
+
+      socket.on('chat message', function(msg) {
+        var item = document.createElement('li');
+        item.textContent = msg;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script
